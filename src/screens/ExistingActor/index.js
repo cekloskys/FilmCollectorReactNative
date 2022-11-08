@@ -80,6 +80,14 @@ const ExistingActor = props => {
         );
     }
 
+    const onAddFilm = () => {
+        navigation.navigate('Add Actor Film', {post: post});
+    }
+
+    const onViewActor = () => {
+        navigation.navigate('View Actor Films', {post: post});
+    }
+
   return (
     <View style={styles.container}>
         <View style={styles.topContainer}>
@@ -106,6 +114,12 @@ const ExistingActor = props => {
             </Pressable>
             <Pressable style={styles.deleteButton} onPress={onActorDelete}>
                 <Text style={styles.buttonText}>Delete</Text>
+            </Pressable>
+            <Pressable style={styles.addButton} onPress={onAddFilm}>
+                <Text style={styles.buttonText}>Add Film</Text>
+            </Pressable>
+            <Pressable style={styles.viewButton} onPress={onViewActor}>
+                <Text style={styles.buttonText}>View Films</Text>
             </Pressable>
         </View>
     </View>

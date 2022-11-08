@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Film from '../../components/Film';
 import styles from './styles';
@@ -10,7 +10,9 @@ import { openDatabase } from "react-native-sqlite-storage";
 const filmCollectorDB = openDatabase({name: 'FilmCollector.db'});
 const filmsTableName = 'films';
 
-const FilmsScreen = props => {
+const AddActorFilmScreen = props => {
+
+  const post = props.route.params.post;
 
   const navigation = useNavigation();
 
@@ -46,6 +48,7 @@ const FilmsScreen = props => {
                   rating: item.rating,
                   duration: item.duration,
                   releasedate: item.releasedate,
+                  actor_id: post.id,
                 });
               }
               // assign results array to lists state variable
@@ -67,23 +70,13 @@ const FilmsScreen = props => {
 
   return (
     <View style={styles.container}>
-      <View>
         <FlatList 
           data={films}
           renderItem={({item}) => <Film post={item} />}
           keyExtractor={item => item.id}
         />
-      </View>
-        <View style={styles.bottom}>
-            <TouchableOpacity 
-                style={styles.button}
-                onPress={() => navigation.navigate('Add Film')}
-                >
-                <Text style={styles.buttonText}>Add Film</Text>
-            </TouchableOpacity>
-        </View>
     </View>
   );
 };
 
-export default FilmsScreen;
+export default AddActorFilmScreen;

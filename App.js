@@ -24,6 +24,11 @@ const App: () => Node = () => {
   } catch (error) {
     console.log('Failed to create actors table ' + error);
   }
+  try {
+    db.createActorFilmsTable();
+  } catch (error) {
+    console.log('Failed to create actor films table ' + error);
+  }
   return <Router />;
 };
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TouchableOpacity, Text, FlatList } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Film from '../../components/Film';
 import styles from './styles';
@@ -9,8 +9,11 @@ import { openDatabase } from "react-native-sqlite-storage";
 // use hook to create database
 const filmCollectorDB = openDatabase({name: 'FilmCollector.db'});
 const filmsTableName = 'films';
+const actorFilmsTableName = 'actor_films';
 
-const FilmsScreen = props => {
+const ViewActorFilmScreen = props => {
+
+  const post = props.route.params.post;
 
   const navigation = useNavigation();
 
@@ -25,7 +28,8 @@ const FilmsScreen = props => {
       filmCollectorDB.transaction(txn => {
         // execute SELECT
         txn.executeSql(
-          `SELECT * FROM ${filmsTableName}`,
+          `SELECT films.id, title, rating, duration, releasedate FROM ${filmsTableName},
+          ${actorFilmsTableName} WHERE films.id = film_id AND actor_id = ${post.id}`,
           [],
           // callback function to handle the results from the
           // SELECT s
@@ -67,23 +71,13 @@ const FilmsScreen = props => {
 
   return (
     <View style={styles.container}>
-      <View>
         <FlatList 
           data={films}
           renderItem={({item}) => <Film post={item} />}
           keyExtractor={item => item.id}
         />
-      </View>
-        <View style={styles.bottom}>
-            <TouchableOpacity 
-                style={styles.button}
-                onPress={() => navigation.navigate('Add Film')}
-                >
-                <Text style={styles.buttonText}>Add Film</Text>
-            </TouchableOpacity>
-        </View>
     </View>
   );
 };
 
-export default FilmsScreen;
+export default ViewActorFilmScreen;
